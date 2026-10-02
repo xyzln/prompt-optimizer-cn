@@ -1,5 +1,7 @@
 # 中文提示词（Prompt Optimizer-CN）
 
+**简体中文 | [English](README_EN.md)**
+
 > 把口语化需求蒸馏成**最省 tokens** 的高质量中文提示词 —— 开箱即用的 Claude Code Skill
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -83,12 +85,3 @@ curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md \
 ## License
 
 [MIT](LICENSE) © 2026 Prompt Optimizer-CN contributors
-
----
-
-<details>
-<summary>English Abstract</summary>
-
-**Prompt Optimizer-CN** is a Claude Code skill that distills verbose, colloquial Chinese requirements into token-efficient, high-quality prompts. It decomposes requirements into six structured elements, recommends the optimal execution framework (single-turn / subagent / workflow / skill / script), and applies Chinese-specific compression techniques (telegraphic style, English term retention, four-character idioms, symbolic notation, classical-Chinese output constraints) — each annotated with measured compression rates and reliability risks.
-
-</details>
