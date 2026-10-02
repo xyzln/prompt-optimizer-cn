@@ -12,16 +12,17 @@
 
 ## 效果对比
 
-**原文（口语，~150 tok）**：
+**原文（口语，~120 tok）**：
 
-> 帮我看看这个项目吧，就是我现在这个代码跑起来特别慢，我也不知道为啥，你帮我优化一下，最好是快点，哦对了我用的是 Python，数据大概有几十万条，就是 pandas 处理的那个脚本，每天早上跑报表用，现在要等好几分钟，老板催了，能不能搞到十几秒这种水平啊，谢谢啦
+> 那个，帮我写个周报呗，这周的话干了挺多活的，主要就是项目推进了不少，然后大大小小的会开了好几个，bug 也改了特别多，烦死了，我们老板每周都要看这个，你帮我写得正式一点、专业一点，但是也别写太长了，他没耐心看，哦对了数据别瞎编啊，改了多少写多少
 
-**压缩稿（~75 tok，省 ~50%）**：
+**压缩稿（~65 tok，省 ~46%）**：
 
 ```
-优化 ~/report.py（pandas，~50万行，每日报表）：运行 3min+ → 目标 <20s。
-先 cProfile 定位瓶颈，再给优化 diff。
-禁区：不改输出格式；pandas 2.x。
+写本周周报：读者=直属上级；正式；≤300字。
+结构：进展｜数据｜风险｜下周计划。
+素材：项目A联调完成；修bug×3（支付回调）；评审会×2。
+禁区：不虚构数据，数字照实。
 ```
 
 目标更清晰、约束更硬、token 减半 —— 一次通过率反而更高。更多示例见 [examples/](examples/)。
@@ -29,6 +30,7 @@
 ## 功能特性
 
 - **三步蒸馏**：拆解六要素 → 推荐最优执行框架（单轮/subagent/workflow/skill/脚本）→ 中文专项压缩
+- **全平台覆盖**：Claude Code（SKILL.md）、Codex/Cursor（AGENTS.md）、ChatGPT/豆包/通义千问/DeepSeek 等（通用系统提示词粘贴）——见[各平台接入指南](docs/各平台接入指南.md)
 - **三档优化**：轻（澄清补全）/ 中（量化+压缩，推荐）/ 狠（极限精简）
 - **迭代微调**：在旧稿上最小精准修改，不重写全文，`{{变量}}` 原样保留
 - **中文专项手法**：电报体、术语英文混用、四字格、符号化、文言输出约束 —— 每条标注压缩率与风险
@@ -36,17 +38,17 @@
 
 ## 快速开始
 
-**Claude Code**：
+| 平台 | 用法 |
+|---|---|
+| Claude Code | `mkdir -p ~/.claude/skills/prompt-optimizer-cn && curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md https://raw.githubusercontent.com/xyzln/prompt-optimizer-cn/main/SKILL.md`，说「优化提示词：…」触发 |
+| Codex / Cursor / Aider | 复制 [AGENTS.md](AGENTS.md) 到项目根目录 |
+| ChatGPT | 设置 → 个性化 → 自定义指令，粘贴 [prompts/system-prompt.md](prompts/system-prompt.md) |
+| Claude 网页版 | Projects → 自定义指令，粘贴同上 |
+| 豆包 / 通义千问 | 创建智能体 → 设定/提示词粘贴同上 |
+| DeepSeek | API 作 system prompt；或新对话首条粘贴同上 |
+| WorkBuddy 等 | 首条消息粘贴同上 + 「此后按以上规则处理我的需求」 |
 
-```bash
-mkdir -p ~/.claude/skills/prompt-optimizer-cn
-curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md \
-  https://raw.githubusercontent.com/xyzln/prompt-optimizer-cn/main/SKILL.md
-```
-
-然后在对话中说「优化提示词：……」「拆解需求：……」即可触发。
-
-**其他 Agent / 手动使用**：SKILL.md 本身就是完整方法论，直接把内容贴给任意 LLM 作为系统提示词同样有效。
+分平台详细步骤：[docs/各平台接入指南.md](docs/各平台接入指南.md)
 
 ## 中文压缩手法速查
 
@@ -64,7 +66,10 @@ curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md \
 
 ## 文档
 
-- [SKILL.md](SKILL.md) — 完整 Skill 定义（核心交付物）
+- [SKILL.md](SKILL.md) — 完整 Skill 定义（Claude Code 核心交付物）
+- [AGENTS.md](AGENTS.md) — Codex / Cursor / Aider 等 AGENTS.md 生态载体
+- [prompts/system-prompt.md](prompts/system-prompt.md) — 通用系统提示词（ChatGPT/豆包/千问/DeepSeek 等粘贴用）
+- [docs/各平台接入指南.md](docs/各平台接入指南.md) — 分平台安装步骤
 - [docs/中文token压缩原理.md](docs/中文token压缩原理.md) — 汇率实测、手法依据、来源与局限
 - [examples/](examples/) — 完整前后对照示例
 

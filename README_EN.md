@@ -12,16 +12,17 @@ Chinese-speaking users often feed LLMs verbose, vague, colloquial requirements �
 
 ## Before / After
 
-**Raw input (colloquial, ~150 tok)**:
+**Raw input (colloquial, ~120 tok)**:
 
-> Help me look at this project, my code runs really slow and I don't know why, please optimize it, faster would be great, oh right it's Python, maybe a few hundred thousand rows, the pandas script, runs the daily report every morning, takes several minutes now, boss is pushing, can you get it to like ten seconds, thanks
+> Um, help me write my weekly report — did a lot this week, mainly pushed the project forward, attended a bunch of meetings big and small, fixed tons of bugs, so annoying — my boss reads it every week, make it formal and professional but not too long, he has no patience — oh and don't make up data, write exactly what was done
 
-**Distilled (~75 tok, ~50% saved)**:
+**Distilled (~65 tok, ~46% saved)**:
 
 ```
-优化 ~/report.py（pandas，~50万行，每日报表）：运行 3min+ → 目标 <20s。
-先 cProfile 定位瓶颈，再给优化 diff。
-禁区：不改输出格式；pandas 2.x。
+写本周周报：读者=直属上级；正式；≤300字。
+结构：进展｜数据｜风险｜下周计划。
+素材：项目A联调完成；修bug×3（支付回调）；评审会×2。
+禁区：不虚构数据，数字照实。
 ```
 
 Clearer goal, harder constraints, half the tokens — and a *higher* first-pass success rate. More in [examples/](examples/).
@@ -29,6 +30,7 @@ Clearer goal, harder constraints, half the tokens — and a *higher* first-pass 
 ## Features
 
 - **3-step distillation**: six-element decomposition → optimal execution framework (single-turn / subagent / workflow / skill / script) → Chinese-specific compression
+- **Works everywhere**: Claude Code (SKILL.md), Codex/Cursor/Aider (AGENTS.md), ChatGPT/Doubao/Qwen/DeepSeek and any agent (paste [prompts/system-prompt.md](prompts/system-prompt.md)) — see [platform guide](docs/各平台接入指南.md) (Chinese)
 - **3 optimization levels**: light (clarify & fill gaps) / medium (quantify + compress, recommended) / aggressive (minimal viable prompt)
 - **Iterative refinement**: minimal precise edits on previous drafts, `{{variables}}` preserved verbatim
 - **Chinese-specific techniques**: telegraphic style, English term retention, four-character idioms, symbolic notation, classical-Chinese output constraints — each annotated with compression rate and risk
@@ -36,17 +38,15 @@ Clearer goal, harder constraints, half the tokens — and a *higher* first-pass 
 
 ## Quick Start
 
-**Claude Code**:
-
-```bash
-mkdir -p ~/.claude/skills/prompt-optimizer-cn
-curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md \
-  https://raw.githubusercontent.com/xyzln/prompt-optimizer-cn/main/SKILL.md
-```
-
-Then say "优化提示词：……" / "拆解需求：……" in conversation.
-
-**Other agents / manual use**: SKILL.md is the complete methodology — paste it into any LLM as a system prompt.
+| Platform | How |
+|---|---|
+| Claude Code | `mkdir -p ~/.claude/skills/prompt-optimizer-cn && curl -o ~/.claude/skills/prompt-optimizer-cn/SKILL.md https://raw.githubusercontent.com/xyzln/prompt-optimizer-cn/main/SKILL.md` |
+| Codex / Cursor / Aider | Copy [AGENTS.md](AGENTS.md) into your project root |
+| ChatGPT | Settings → Personalization → Custom Instructions → paste [prompts/system-prompt.md](prompts/system-prompt.md) |
+| Claude web | Projects → Custom Instructions → paste same file |
+| Doubao / Qwen | Create agent/bot → paste into persona/system prompt |
+| DeepSeek | API `system` role; or paste as first message |
+| Any other agent | Paste as first message + "follow these rules from now on" |
 
 ## Compression Techniques Cheat Sheet
 
@@ -64,7 +64,10 @@ Then say "优化提示词：……" / "拆解需求：……" in conversation.
 
 ## Docs
 
-- [SKILL.md](SKILL.md) — full skill definition (core deliverable, bilingual-ready)
+- [SKILL.md](SKILL.md) — full skill definition (Claude Code core deliverable)
+- [AGENTS.md](AGENTS.md) — Codex / Cursor / Aider carrier
+- [prompts/system-prompt.md](prompts/system-prompt.md) — universal system prompt (paste into ChatGPT/Doubao/Qwen/DeepSeek…)
+- [docs/各平台接入指南.md](docs/各平台接入指南.md) — per-platform setup guide (Chinese)
 - [docs/中文token压缩原理.md](docs/中文token压缩原理.md) — token rates, evidence, sources (Chinese)
 - [examples/](examples/) — full before/after walkthroughs (Chinese)
 
